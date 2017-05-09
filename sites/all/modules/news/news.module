@@ -1,0 +1,109 @@
+<?php
+function News_menu() {
+    $items = array();
+    $items['News'] = array(
+        'title' => 'The Latest News',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('source_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['result'] = array(
+        'title' => 'Result',
+        'page callback' => 'get_news',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function source_form(){
+    $form['source'] = array(
+        '#title'=>'Get the latest news',
+        '#description'=>'pick a news source',
+        '#type'=>'radios',
+        '#options'=>array(
+            t('associated-press'),
+            t('bbc-news'),
+            t('business-insider'),
+        ),
+        '#required'=>TRUE,
+    );
+    $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'submit',
+  );
+  return $form;
+}
+
+function source_form_submit($form, &$form_state){
+    $source = $form_state['values']['source'];
+    $source_name = '';
+    switch($source){
+        case 0:
+            $source_name = 'associated-press';
+            break;
+        case 1:
+            $source_name = 'bbc-news';
+            break;
+        case 2:
+            $source_name = 'business-insider';
+            break;
+        default:
+            $source_name = 'error';
+    }
+    $_SESSION['source']=$source_name;
+    $form_state['redirect']='result';
+}
+
+function get_news() {
+    $source=$_SESSION['source'];
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=latest&apiKey=ccd4623de5dd47dd9c48798e310b4e34',
+        CURLOPT_USERAGENT => 'KojiKodes'
+    ));
+    $articles = curl_exec($curl);
+    curl_close($curl);
+
+
+    $stuff = json_decode($articles);
+    $random_number = mt_rand(0,count($stuff->articles));
+    echo '<pre>';
+    var_dump($stuff->articles[$random_number]);
+    var_dump($random_number);
+    echo '</pre>';
+
+//sources->
+// associated-press
+// bbc-news
+// business-insider
+
+    // if (isset($sources->sources[0])) {
+    //
+    //     $sourceNumber = mt_rand(0, count($sources->sources));
+    //     $source = $sources->sources[$sourceNumber]->id;
+    //
+    //     $curl = curl_init();
+    //     // Set some options - we are passing in a useragent too here
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_RETURNTRANSFER => 1,
+    //         CURLOPT_URL => 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=latest&apiKey=ccd4623de5dd47dd9c48798e310b4e34',
+    //         CURLOPT_USERAGENT => 'Koji Kodes'
+    //     ));
+    //     // Send the request & save response to $resp
+    //     $articles = curl_exec($curl);
+    //     // Close request to clear up some resources
+    //     curl_close($curl);
+    //     $recent_news = json_decode($articles);
+    //     return '<h1>Bob</h1>';
+    // }
+    // return "couldn't find any news this time";
+}
+
+function show_news() {
+    return 'Hello';
+}
