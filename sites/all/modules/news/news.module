@@ -77,31 +77,21 @@ function get_news() {
     var_dump($random_number);
     echo '</pre>';
 
-//sources->
-// associated-press
-// bbc-news
-// business-insider
+    $article_array = [];
+    $title = $stuff->articles[$random_number]->title;
+    $author = $stuff->articles[$random_number]->author;
+    $description = $stuff->articles[$random_number]->description;
+    $url = $stuff->articles[$random_number]->url;
+    $urlToImage = $stuff->articles[$random_number]->urlToImage;
+    $publishedAt = $stuff->articles[$random_number]->publishedAt;
 
-    // if (isset($sources->sources[0])) {
-    //
-    //     $sourceNumber = mt_rand(0, count($sources->sources));
-    //     $source = $sources->sources[$sourceNumber]->id;
-    //
-    //     $curl = curl_init();
-    //     // Set some options - we are passing in a useragent too here
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_RETURNTRANSFER => 1,
-    //         CURLOPT_URL => 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=latest&apiKey=ccd4623de5dd47dd9c48798e310b4e34',
-    //         CURLOPT_USERAGENT => 'Koji Kodes'
-    //     ));
-    //     // Send the request & save response to $resp
-    //     $articles = curl_exec($curl);
-    //     // Close request to clear up some resources
-    //     curl_close($curl);
-    //     $recent_news = json_decode($articles);
-    //     return '<h1>Bob</h1>';
-    // }
-    // return "couldn't find any news this time";
+    return '
+        <h2>'. $title . '</h2>
+        <p>'. $description .'</p>
+        <img src="'.$urlToImage.'"><br>
+        <a href="'. $url .'">Read More</a>
+    ';
+
 }
 
 function show_news() {
