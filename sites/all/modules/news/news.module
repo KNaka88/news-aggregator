@@ -60,23 +60,14 @@ function source_form_submit($form, &$form_state){
 
 function get_news() {
     $source=$_SESSION['source'];
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=latest&apiKey=ccd4623de5dd47dd9c48798e310b4e34',
-        CURLOPT_USERAGENT => 'KojiKodes'
-    ));
-    $articles = curl_exec($curl);
-    curl_close($curl);
-    $stuff = json_decode($articles);
-    if(isset($stuff->articles[0])){
-        $random_number = mt_rand(0,count($stuff->articles));
-        $random_article = $stuff->articles[$random_number];
-        echo '<pre>';
-        var_dump($stuff->articles[$random_number]);
-        var_dump($random_number);
-        echo '</pre>';
 
+    $stuff = getArticle($source);
+
+
+    if(isset($stuff->articles[0])){
+
+        $random_article = getRandomArticle($stuff);
+  
         $title = $random_article->title;
         $author = $random_article->author;
         $description = $random_article->description;
@@ -116,4 +107,29 @@ function get_news() {
 
 function show_news() {
     return 'Hello';
+}
+
+function getArticle($source){
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://newsapi.org/v1/articles?source='.$source.'&sortBy=latest&apiKey=ccd4623de5dd47dd9c48798e310b4e34',
+        CURLOPT_USERAGENT => 'KojiKodes'
+    ));
+    $articles = curl_exec($curl);
+    curl_close($curl);
+    $stuff = json_decode($articles);
+
+    return $stuff;
+}
+
+function getRandomArticle($stuff){
+  $random_number = mt_rand(0,count($stuff->articles));
+  $random_article = $stuff->articles[$random_number];
+  echo '<pre>';
+  var_dump($stuff->articles[$random_number]);
+  var_dump($random_number);
+  echo '</pre>';
+
+  return $random_article;
 }

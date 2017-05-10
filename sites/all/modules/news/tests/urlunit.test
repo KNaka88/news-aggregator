@@ -1,0 +1,36 @@
+<?php
+/**
+ *
+ */
+class UrlunitTestCase extends DrupalUnitTestCase
+{
+
+  public static function getInfo()
+  {
+    return array(
+      'name'=> 'url unit test',
+      'description'=> 'test my url with test unit',
+      'group'=> 'my unit tests',
+    );
+  }
+  function testReturnUrl(){
+    $description = 'Is stuff variable an object?';
+    $input = 'business-insider';
+    $result = getArticle($input);
+    $this->assertTrue(is_object($result), $description);
+  }
+
+  function testReturnRandomArticleUrl(){
+    $description = 'Returned Article/s url is matching?';
+
+    $first_input = 'business-insider';
+    $stuff = getArticle($first_input);
+
+    $random_article = getRandomArticle($stuff);
+    $result = $random_article->url;
+
+    $check_preg_match = preg_match("|http://www.businessinsider.com.*|i",$result);
+
+    $this->assertTrue($check_preg_match, $description);
+  }
+}
