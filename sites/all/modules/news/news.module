@@ -25,8 +25,8 @@ function source_form(){
         '#description'=>'pick a news source',
         '#type'=>'radios',
         '#options'=>array(
-            t('associated-press'),
-            t('bbc-news'),
+            t('MTV News'),
+            t('daily-mail'),
             t('business-insider'),
         ),
         '#required'=>TRUE,
@@ -43,10 +43,10 @@ function source_form_submit($form, &$form_state){
     $source_name = '';
     switch($source){
         case 0:
-            $source_name = 'associated-press';
+            $source_name = 'mtv-news';
             break;
         case 1:
-            $source_name = 'bbc-news';
+            $source_name = 'daily-mail';
             break;
         case 2:
             $source_name = 'business-insider';
@@ -68,29 +68,49 @@ function get_news() {
     ));
     $articles = curl_exec($curl);
     curl_close($curl);
-
-
     $stuff = json_decode($articles);
-    $random_number = mt_rand(0,count($stuff->articles));
-    echo '<pre>';
-    var_dump($stuff->articles[$random_number]);
-    var_dump($random_number);
-    echo '</pre>';
+    if(isset($stuff->articles[0])){
+        $random_number = mt_rand(0,count($stuff->articles));
+        $random_article = $stuff->articles[$random_number];
+        echo '<pre>';
+        var_dump($stuff->articles[$random_number]);
+        var_dump($random_number);
+        echo '</pre>';
 
-    $article_array = [];
-    $title = $stuff->articles[$random_number]->title;
-    $author = $stuff->articles[$random_number]->author;
-    $description = $stuff->articles[$random_number]->description;
-    $url = $stuff->articles[$random_number]->url;
-    $urlToImage = $stuff->articles[$random_number]->urlToImage;
-    $publishedAt = $stuff->articles[$random_number]->publishedAt;
+        $title = $random_article->title;
+        $author = $random_article->author;
+        $description = $random_article->description;
+        $url = $random_article->url;
+        $urlToImage = $random_article->urlToImage;
+        $publishedAt = $random_article->publishedAt;
 
-    return '
+        ////Create NODE
+        $node = new stdClass();
+        $node->title = $title;
+        $node->type = 'news_article';
+        node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+        $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+        $node->status = 1; //(1 or 0): published or not
+        $node->promote = 1; //(1 or 0): promoted to front page
+        $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+        $node->field_author['und'][0]['value'] = $author;
+        $node->field_url['und'][0]['value'] = $url;
+        $node->field_image_url['und'][0]['value'] = $urlToImage;
+        $node->field_published_at['und'][0]['value'] = $publishedAt;
+        $node->field_source['und'][0]['value'] = $source;
+        $node = node_submit($node);
+        node_save($node);
+
+
+        return '
         <h2>'. $title . '</h2>
         <p>'. $description .'</p>
         <img src="'.$urlToImage.'"><br>
         <a href="'. $url .'">Read More</a>
-    ';
+        ';
+    }
+    return "Could not find any news this time.";
 
 }
 

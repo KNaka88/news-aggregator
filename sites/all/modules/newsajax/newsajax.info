@@ -1,0 +1,5 @@
+name = My ajax news
+description = ajax news.
+package = Other
+core = 7.x
+files[]= newsajax.module
