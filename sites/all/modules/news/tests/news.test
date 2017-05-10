@@ -28,11 +28,4 @@ class NewsTests extends DrupalWebTestCase {
    $this->drupalGet('result');
    $this->assertUrl('http://localhost:8888/result', array(), 'yes result url', 'Other');
  }
-
-
-
-
-
-
-
 }
