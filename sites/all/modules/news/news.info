@@ -3,3 +3,4 @@ description = Collects news using newsapi.org.
 package = News Aggregator
 core = 7.x
 files[] = news.module
+files[] = tests/news.test

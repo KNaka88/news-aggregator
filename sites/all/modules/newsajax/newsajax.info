@@ -3,3 +3,4 @@ description = ajax news.
 package = Other
 core = 7.x
 files[]= newsajax.module
+files[] = tests/newsajax.test
