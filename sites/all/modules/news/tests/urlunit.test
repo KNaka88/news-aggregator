@@ -13,14 +13,14 @@ class UrlunitTestCase extends DrupalUnitTestCase
       'group'=> 'my unit tests',
     );
   }
-  function testReturnUrl(){
+  function testGetArticle(){
     $description = 'Is stuff variable an object?';
     $input = 'business-insider';
     $result = getArticle($input);
     $this->assertTrue(is_object($result), $description);
   }
 
-  function testReturnRandomArticleUrl(){
+  function testGetRandomArticle(){
     $description = 'Returned Article/s url is matching?';
 
     $first_input = 'business-insider';

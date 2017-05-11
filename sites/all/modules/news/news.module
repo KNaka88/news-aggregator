@@ -67,7 +67,7 @@ function get_news() {
     if(isset($stuff->articles[0])){
 
         $random_article = getRandomArticle($stuff);
-  
+
         $title = $random_article->title;
         $author = $random_article->author;
         $description = $random_article->description;
@@ -87,12 +87,16 @@ function get_news() {
 
         $node->field_author['und'][0]['value'] = $author;
         $node->field_url['und'][0]['value'] = $url;
-        $node->field_image_url['und'][0]['value'] = $urlToImage;
         $node->field_published_at['und'][0]['value'] = $publishedAt;
         $node->field_source['und'][0]['value'] = $source;
+
+        $filename = 'image.txt';
+        $image = file_get_contents($urlToImage);
+        $file = file_save_data($image, 'public://article_img/' . $filename, FILE_EXISTS_RENAME);
+        $node->field_image = array(LANGUAGE_NONE => array('0' => (array)$file));
+
         $node = node_submit($node);
         node_save($node);
-
 
         return '
         <h2>'. $title . '</h2>
@@ -126,10 +130,5 @@ function getArticle($source){
 function getRandomArticle($stuff){
   $random_number = mt_rand(0,count($stuff->articles));
   $random_article = $stuff->articles[$random_number];
-  echo '<pre>';
-  var_dump($stuff->articles[$random_number]);
-  var_dump($random_number);
-  echo '</pre>';
-
   return $random_article;
 }

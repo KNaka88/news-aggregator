@@ -12,6 +12,7 @@ function newsajax_menu(){
 function newsajax_ajax_callback($js, $node_id)
 {
     $node = node_load($node_id);
+    echo $node->field_image_url['und'][0]['value'];
 
     if($js == 'nojs'){
         drupal_goto('node/'. $node->nid);

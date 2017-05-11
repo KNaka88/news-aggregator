@@ -1,0 +1,5 @@
+name = Add Image
+description = Add img tag to our link
+package = Custom
+core = 7.x
+files[] = addImgAttribute.module
