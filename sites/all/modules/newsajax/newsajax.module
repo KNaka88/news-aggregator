@@ -1,16 +1,15 @@
 <?php
-function newsajax_menu(){
+  function newsajax_menu(){
     $items['path-to-ajax/%/%']= array(
-        'access arguments'=> array('access content'),
-        'page callback'=> 'newsajax_ajax_callback',
-        'page arguments'=> array(1,2),
-        'type'=> MENU_CALLBACK,
+      'access arguments'=> array('access content'),
+      'page callback'=> 'newsajax_ajax_callback',
+      'page arguments'=> array(1,2),
+      'type'=> MENU_CALLBACK,
     );
     return $items;
-}
+  }
 
-function newsajax_ajax_callback($js, $node_id)
-{
+  function newsajax_ajax_callback($js, $node_id){
     $node = node_load($node_id);
     echo $node->field_image_url['und'][0]['value'];
 
@@ -23,4 +22,4 @@ function newsajax_ajax_callback($js, $node_id)
     $commands[]= ajax_command_html('#newsajax-ajax-wrapper', $html);
     print ajax_render($commands);
     exit;
-}
+  }

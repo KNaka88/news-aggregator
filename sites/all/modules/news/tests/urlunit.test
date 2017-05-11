@@ -4,15 +4,14 @@
  */
 class UrlunitTestCase extends DrupalUnitTestCase
 {
-
-  public static function getInfo()
-  {
+  public static function getInfo(){
     return array(
       'name'=> 'url unit test',
       'description'=> 'test my url with test unit',
       'group'=> 'my unit tests',
     );
   }
+
   function testGetArticle(){
     $description = 'Is stuff variable an object?';
     $input = 'business-insider';

@@ -1,27 +1,27 @@
 <?php
 class NewsajaxTests extends AJAXFrameworkTestCase {
 
- public static function getInfo() {
-     return array(
-         'name' => 'News Ajax Render Test',
-         'description' => 'Test for ajax_render',
-         'group' => 'News Ajax Group',
-     );
- }
+  public static function getInfo() {
+    return array(
+    'name' => 'News Ajax Render Test',
+    'description' => 'Test for ajax_render',
+    'group' => 'News Ajax Group',
+    );
+  }
 
- public function setUp() {
-     parent::setUp(array('newsajax'));
- }
+  public function setUp() {
+    parent::setUp(array('newsajax'));
+  }
 
- public function testAJAXRENDER() {
-   $commands = $this->drupalGetAJAX('ajax-test/render');
-
+  public function testAJAXRENDER() {
+    $commands = $this->drupalGetAJAX('ajax-test/render');
     // Verify that there is a command to load settings added with
     // drupal_add_js().
     $expected = array(
       'command' => 'settings',
       'settings' => array('basePath' => base_path(), 'ajax' => 'test'),
     );
+
     $this->assertCommand($commands, $expected, t('ajax_render() loads settings added with drupal_add_js().'));
 
     // Verify that Ajax settings are loaded for #type 'link'.
@@ -29,9 +29,5 @@ class NewsajaxTests extends AJAXFrameworkTestCase {
     $settings = $this->drupalGetSettings();
     $this->assertEqual($settings['ajax']['ajax-link']['url'], url('filter/tips'));
     $this->assertEqual($settings['ajax']['ajax-link']['wrapper'], 'block-system-main');
- }
-
-
-
-
+  }
 }

@@ -1,31 +1,30 @@
 <?php
 class NewsTests extends DrupalWebTestCase {
 
- public static function getInfo() {
-     return array(
-         'name' => 'News Display Test',
-         'description' => 'Test for news module display',
-         'group' => 'Custom Tests Group',
-     );
- }
+  public static function getInfo() {
+    return array(
+      'name' => 'News Display Test',
+      'description' => 'Test for news module display',
+      'group' => 'Custom Tests Group',
+    );
+  }
 
- public function setUp() {
-     parent::setUp(array('news'));
- }
+  public function setUp() {
+    parent::setUp(array('news'));
+  }
 
- public function testNewsText() {
-   $this->drupalGet('News');
-   $this->assertText("MTV News", 'MTV baby');
- }
+  public function testNewsText() {
+    $this->drupalGet('News');
+    $this->assertText("MTV News", 'MTV baby');
+  }
 
+  public function testNews() {
+    $this->drupalGet('News');
+    $this->assertUrl('http://localhost:8888/News', array(), 'yes url', 'Other');
+  }
 
- public function testNews() {
-   $this->drupalGet('News');
-   $this->assertUrl('http://localhost:8888/News', array(), 'yes url', 'Other');
- }
-
- public function testResult() {
-   $this->drupalGet('result');
-   $this->assertUrl('http://localhost:8888/result', array(), 'yes result url', 'Other');
- }
+  public function testResult() {
+    $this->drupalGet('result');
+    $this->assertUrl('http://localhost:8888/result', array(), 'yes result url', 'Other');
+  }
 }

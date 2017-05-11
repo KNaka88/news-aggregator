@@ -5,3 +5,4 @@ core = 7.x
 files[] = news.module
 files[] = tests/news.test
 files[]= tests/urlunit.test
+stylesheets[all][]= css/styles.css
