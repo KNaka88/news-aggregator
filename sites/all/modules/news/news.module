@@ -2,7 +2,7 @@
   function News_menu() {
     $items = array();
     $items['News'] = array(
-      'title' => 'The Latest News',
+      'title' => 'Get the Latest News',
       'page callback' => 'drupal_get_form',
       'page arguments' => array('source_form'),
       'access callback' => TRUE,
@@ -99,7 +99,7 @@
       return '
         <h2>'. $title . '</h2>
         <p>'. $description .'</p>
-        <img src="'.$urlToImage.'"><br>
+        <img class="img-result" src="'.$urlToImage.'"><br>
         <a href="'. $url .'">Read More</a>
         ';
     }
